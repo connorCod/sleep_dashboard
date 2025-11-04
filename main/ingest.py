@@ -2,18 +2,22 @@ import requests
 import json
 from urllib.parse import urlencode
 import webbrowser
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 # Your OAuth2 application credentials
-CLIENT_ID = "YOUR_CLIENT_ID"
-CLIENT_SECRET = "YOUR_CLIENT_SECRET"
-REDIRECT_URI = "YOUR_REDIRECT_URI"
+client_id = os.getenv("OURA_CLIENT_ID")
+client_secret = os.getenv("OURA_CLIENT_SECRET")
+redirect_uri = os.getenv("OURA_REDIRECT_URI")
 
 # Step 1: Direct user to authorization page
 auth_params = {
-    "client_id": CLIENT_ID,
-    "redirect_uri": REDIRECT_URI,
+    "client_id": client_id,
+    "redirect_uri": redirect_uri,
     "response_type": "code",
-    "scope": "daily heartrate personal"
+    "scope": "daily"
 }
 auth_url = f"https://cloud.ouraring.com/oauth/authorize?{urlencode(auth_params)}"
 print(f"Please visit this URL to authorize: {auth_url}")
@@ -27,9 +31,9 @@ token_url = "https://api.ouraring.com/oauth/token"
 token_data = {
     "grant_type": "authorization_code",
     "code": auth_code,
-    "client_id": CLIENT_ID,
-    "client_secret": CLIENT_SECRET,
-    "redirect_uri": REDIRECT_URI
+    "client_id": client_id,
+    "client_secret": client_secret,
+    "redirect_uri": redirect_uri
 }
 response = requests.post(token_url, data=token_data)
 tokens = response.json()
@@ -41,7 +45,7 @@ headers = {"Authorization": f"Bearer {access_token}"}
 sleep_data = requests.get(
     "https://api.ouraring.com/v2/usercollection/sleep",
     headers=headers,
-    params={"start_date": "2023-01-01", "end_date": "2023-01-07"}
+    params={"start_date": "2025-11-01", "end_date": "2025-11-04"}
 )
 print(json.dumps(sleep_data.json(), indent=2))
 
@@ -50,8 +54,8 @@ def refresh_access_token(refresh_token):
     token_data = {
         "grant_type": "refresh_token",
         "refresh_token": refresh_token,
-        "client_id": CLIENT_ID,
-        "client_secret": CLIENT_SECRET
+        "client_id": client_id,
+        "client_secret": client_secret
     }
     response = requests.post(token_url, data=token_data)
     new_tokens = response.json()
