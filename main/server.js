@@ -7,13 +7,14 @@ const app = express();
 app.use(bodyParser.json());
 
 const CLIENT_SECRET = process.env.OURA_CLIENT_SECRET;
+const VERIFICATION_TOKEN = process.env.SECURE_TOKEN;
 
 // Verification endpoint for webhook setup
 app.get('/oura-webhook', (req, res) => {
   const { verification_token, challenge } = req.query;
 
   // Verify the token matches what you expect
-  if (verification_token === "YOUR_VERIFICATION_TOKEN") {
+  if (verification_token === VERIFICATION_TOKEN) {
     res.json({ challenge });
   } else {
     res.status(401).send('Invalid verification token');
