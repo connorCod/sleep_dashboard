@@ -7,7 +7,7 @@ const app = express();
 app.use(bodyParser.json());
 
 const CLIENT_SECRET = process.env.OURA_CLIENT_SECRET;
-const VERIFICATION_TOKEN = process.env.SECURE_TOKEN;
+const VERIFICATION_TOKEN = process.env.OURA_WEBHOOK_TOKEN;
 
 // Verification endpoint for webhook setup
 app.get('/oura-webhook', (req, res) => {
