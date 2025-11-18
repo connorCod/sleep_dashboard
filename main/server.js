@@ -1,11 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const crypto = require('crypto');
+require('dotenv').config()
 
 const app = express();
 app.use(bodyParser.json());
 
-const CLIENT_SECRET = "YOUR_CLIENT_SECRET";
+const CLIENT_SECRET = process.env.OURA_CLIENT_SECRET;
 
 // Verification endpoint for webhook setup
 app.get('/oura-webhook', (req, res) => {
