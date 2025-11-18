@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "crypto": "^1.0.1",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0"
+  }
+}
